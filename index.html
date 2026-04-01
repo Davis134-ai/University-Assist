@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>University Assist Group | Uganda Health Training Institutions</title>
+  <!-- Google Fonts + modern system font fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* container utility */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* header / navigation */
+    .navbar {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(0px);
+      background: rgba(255,255,255,0.98);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 1rem 0;
+    }
+
+    .logo h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e3c72, #2b4c7c);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .logo span {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #2c3e66;
+      background: none;
+      background-clip: unset;
+      -webkit-background-clip: unset;
+      color: #2c3e66;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      margin-left: 28px;
+      font-weight: 500;
+      color: #1e293b;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #0891b2;
+    }
+
+    /* hero section */
+    .hero {
+      background: linear-gradient(120deg, #e6f7f5 0%, #d1e9e8 100%);
+      border-radius: 0 0 2rem 2rem;
+      padding: 3rem 0 3.5rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: #cffafe;
+      color: #0e5a6b;
+      padding: 0.25rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .hero h2 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0a2540;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #2c3e50;
+      max-width: 620px;
+      margin: 0 auto 1.8rem auto;
+    }
+
+    .flag-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      border-radius: 60px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.9rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* institutions grid */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 2rem 0 1rem 0;
+      color: #0f172a;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title:after {
+      content: '';
+      display: block;
+      width: 60%;
+      height: 3px;
+      background: #0f766e;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    .institution-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0 3rem;
+    }
+
+    /* card style */
+    .inst-card {
+      background: white;
+      border-radius: 1.25rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+      border: 1px solid #eef2f6;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inst-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1);
+      border-color: #cbd5e1;
+    }
+
+    .card-img {
+      background: linear-gradient(135deg, #e6f7f5 0%, #d1f0ed 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.8rem 0;
+      color: #0f766e;
+      font-size: 3rem;
+    }
+
+    .card-content {
+      padding: 1.5rem 1.2rem 1.8rem;
+      flex: 1;
+    }
+
+    .inst-name {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .inst-location {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: #475569;
+      margin-bottom: 1rem;
+    }
+
+    .inst-desc {
+      font-size: 0.9rem;
+      color: #334155;
+      margin-bottom: 1.5rem;
+      line-height: 1.45;
+    }
+
+    .btn-apply {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn-apply i {
+      font-size: 0.9rem;
+    }
+
+    .btn-apply:hover {
+      background: #0b5e58;
+      transform: scale(0.98);
+    }
+
+    /* features section */
+    .features {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      margin: 2rem 0 2rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      border: 1px solid #e9eef3;
+    }
+
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: 1.2rem;
+    }
+
+    .feature-item {
+      flex: 1;
+      min-width: 180px;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      color: #0f766e;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-item h4 {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-item p {
+      font-size: 0.85rem;
+      color: #475569;
+    }
+
+    /* footer */
+    footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 2.5rem 0 1.8rem;
+      margin-top: 3rem;
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .footer-logo p {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #1e293b;
+      font-size: 0.8rem;
+    }
+
+    /* alert / message */
+    .info-message {
+      background: #e6f7f5;
+      border-left: 5px solid #0f766e;
+      padding: 0.8rem 1.2rem;
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #115e59;
+    }
+
+    .health-badge {
+      background: #dcfce7;
+      color: #166534;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 0.4rem;
+    }
+
+    /* responsive touches */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+      .hero h2 {
+        font-size: 2rem;
+      }
+      .nav-container {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .nav-links a {
+        margin: 0 12px;
+      }
+      .section-title {
+        font-size: 1.6rem;
+      }
+      .features-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container nav-container">
+    <div class="logo">
+      <h1>University Assist Group</h1>
+      <span>🏥 Supporting Uganda's future health professionals | Tuijukane</span>
+    </div>
+    <div class="nav-links">
+      <a href="#institutions"><i class="fas fa-hospital-user"></i> Institutions</a>
+      <a href="#how-it-works"><i class="fas fa-circle-info"></i> How it works</a>
+      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-stethoscope"></i> Nursing, Midwifery & Clinical Officer Training
+      </div>
+      <h2>Your gateway to Uganda's premier health training institutions</h2>
+      <p>Apply directly to nursing schools, colleges of midwifery, and clinical officer programs across Uganda. Start your healthcare career today.</p>
+      <div class="flag-note">
+        <i class="fas fa-map-marker-alt"></i> Ministry of Health & NCHE approved institutions
+        <i class="fas fa-uganda-flag" style="margin-left: 6px;"></i>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <!-- info banner -->
+    <div class="info-message">
+      <i class="fas fa-hand-holding-medical"></i>
+      <span><strong>Health training applications:</strong> Click "Apply Now" on any institution below to complete the official Ministry of Education and Sports application form.</span>
+    </div>
+
+    <!-- Institutions section -->
+    <div id="institutions">
+      <div class="section-title">🏥 Accredited Health Training Institutions</div>
+      <p class="subhead" style="margin-bottom: 0.5rem; color: #334155;">Choose from Uganda's leading nursing, midwifery, and clinical officer training schools.</p>
+    </div>
+
+    <!-- Dynamic grid of health institutions -->
+    <div class="institution-grid" id="institutionGrid"></div>
+
+    <!-- How it works + features -->
+    <div id="how-it-works">
+      <div class="section-title">✨ How University Assist Group works</div>
+      <div class="features">
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-search"></i></div>
+            <h4>1. Choose institution</h4>
+            <p>Browse our curated list of nursing, midwifery & clinical officer schools.</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+            <h4>2. Fill application</h4>
+            <p>Complete digital forms tailored to each health training institution's requirements.</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+            <h4>3. Submit & track</h4>
+            <p>Get confirmation & follow your application status in real time.</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-headset"></i></div>
+            <h4>24/7 support</h4>
+            <p>Dedicated assistance for aspiring healthcare students nationwide.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional info / Contact placeholder -->
+    <div id="contact" style="margin: 2rem 0 1rem;">
+      <div class="section-title">📞 Need assistance?</div>
+      <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 1.2rem; margin-top: 0.8rem;">
+        <p><i class="fas fa-phone-alt"></i> <strong>Helpline:</strong> +256771206831 | <i class="fas fa-envelope"></i> <strong>Email:</strong> universityassist73@gmail.com</p>
+        <p style="margin-top: 0.6rem; font-size: 0.9rem;">Visit our offices in Kampala, Makerere Hill Road — or reach out via WhatsApp business for assistance with nursing and midwifery applications.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <p>University Assist Group</p>
+        <span style="font-size: 0.8rem;">Empowering Uganda's next generation of healthcare heroes</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">FAQs</a>
+        <a href="#">Ministry of Health Uganda</a>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2025 University Assist Group — Supporting nursing, midwifery & clinical officer applicants across Uganda. 🇺🇬
+    </div>
+  </div>
+</footer>
+
+<script>
+  // --------------------------------------------------------------
+  // Health Training Institutions Data (exactly as requested)
+  // --------------------------------------------------------------
+  const healthInstitutions = [
+    {
+      id: "mulago_nursing",
+      name: "Mulago School of Nursing and Midwifery",
+      location: "Kampala, Uganda",
+      shortDesc: "Premier nursing & midwifery training school located within Mulago National Referral Hospital. Offers diploma and certificate programs.",
+      iconClass: "fas fa-hospital",
+      programType: "Nursing & Midwifery"
+    },
+    {
+      id: "masaka_nursing",
+      name: "Masaka School of Comprehensive Nursing",
+      location: "Masaka, Central Uganda",
+      shortDesc: "Renowned for comprehensive nursing training, producing skilled nurses for the healthcare system.",
+      iconClass: "fas fa-hand-holding-heart",
+      programType: "Comprehensive Nursing"
+    },
+    {
+      id: "lira_nursing",
+      name: "Lira School of Comprehensive Nursing",
+      location: "Lira, Northern Uganda",
+      shortDesc: "Leading comprehensive nursing school serving the Lango sub-region and beyond with quality training.",
+      iconClass: "fas fa-graduation-cap",
+      programType: "Comprehensive Nursing"
+    },
+    {
+      id: "kabale_nursing",
+      name: "Kabale School of Comprehensive Nursing",
+      location: "Kabale, Western Uganda",
+      shortDesc: "Excellence in nursing education in the Kigezi region, focusing on community health and clinical practice.",
+      iconClass: "fas fa-school",  // Changed from fa-mountains to fa-school for reliable loading
+      programType: "Comprehensive Nursing"
+    },
+    {
+      id: "arua_nursing",
+      name: "Arua School of Comprehensive Nursing",
+      location: "Arua, West Nile, Uganda",
+      shortDesc: "Key training institution for comprehensive nursing in the West Nile region, serving diverse communities.",
+      iconClass: "fas fa-tree",
+      programType: "Comprehensive Nursing"
+    },
+    {
+      id: "ntungamo_nursing",
+      name: "Ntungamo College of Nursing and Midwifery",
+      location: "Ntungamo, Western Uganda",
+      shortDesc: "Specialized college offering both nursing and midwifery programs with a focus on maternal and child health.",
+      iconClass: "fas fa-baby-carriage",
+      programType: "Nursing & Midwifery"
+    },
+    {
+      id: "fortportal_clinical",
+      name: "Fort Portal School of Clinical Officers / College of Health Sciences",
+      location: "Fort Portal, Western Uganda",
+      shortDesc: "Premier institution for Clinical Officer training and health sciences education in the Rwenzori region.",
+      iconClass: "fas fa-stethoscope",
+      programType: "Clinical Medicine & Health Sciences"
+    },
+    {
+      id: "hoima_nursing",
+      name: "Hoima School of Nursing and Midwifery",
+      location: "Hoima, Western Uganda",
+      shortDesc: "Quality nursing and midwifery training serving the Albertine region and oil-rich communities.",
+      iconClass: "fas fa-water",
+      programType: "Nursing & Midwifery"
+    },
+    {
+      id: "jinja_nursing",
+      name: "Jinja School of Nursing and Midwifery",
+      location: "Jinja, Eastern Uganda",
+      shortDesc: "Historic nursing school near the source of the Nile, producing competent midwives and nurses for decades.",
+      iconClass: "fas fa-water",
+      programType: "Nursing & Midwifery"
+    },
+    {
+      id: "mbale_hygiene",
+      name: "Mbale School of Hygiene",
+      location: "Mbale, Eastern Uganda",
+      shortDesc: "Specialized training in environmental health, public health, and hygiene education for health professionals.",
+      iconClass: "fas fa-hand-sparkles",
+      programType: "Environmental Health & Hygiene"
+    },
+    {
+      id: "kaabong_nursing",
+      name: "Kaabong College of Nursing and Midwifery",
+      location: "Kaabong, Karamoja, Uganda",
+      shortDesc: "Serving the Karamoja region with essential nursing and midwifery training, improving healthcare access.",
+      iconClass: "fas fa-sun",
+      programType: "Nursing & Midwifery"
+    }
+  ];
+
+  // Helper: Create card element for each institution with direct link to apply.html
+  function createInstitutionCard(inst) {
+    const card = document.createElement('div');
+    card.className = 'inst-card';
+
+    // icon/image area
+    const imgDiv = document.createElement('div');
+    imgDiv.className = 'card-img';
+    const icon = document.createElement('i');
+    icon.className = inst.iconClass + ' fa-4x';
+    imgDiv.appendChild(icon);
+
+    // content area
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'card-content';
+
+    const nameEl = document.createElement('h3');
+    nameEl.className = 'inst-name';
+    nameEl.textContent = inst.name;
+
+    // Add program badge
+    const badgeSpan = document.createElement('span');
+    badgeSpan.className = 'health-badge';
+    badgeSpan.innerHTML = `<i class="fas fa-notes-medical"></i> ${inst.programType}`;
+    
+    const locationEl = document.createElement('div');
+    locationEl.className = 'inst-location';
+    locationEl.innerHTML = `<i class="fas fa-map-pin"></i> ${inst.location}`;
+
+    const descEl = document.createElement('p');
+    descEl.className = 'inst-desc';
+    descEl.textContent = inst.shortDesc;
+
+    // Create anchor link instead of button with onclick
+    const applyLink = document.createElement('a');
+    applyLink.className = 'btn-apply';
+    // Encode institution data in URL parameters for apply.html to consume
+    const params = new URLSearchParams({
+      institution: inst.name,
+      location: inst.location,
+      programType: inst.programType,
+      institutionId: inst.id
+    });
+    applyLink.href = `apply.html?${params.toString()}`;
+    applyLink.innerHTML = `<i class="fas fa-arrow-right-to-bracket"></i> Apply Now →`;
+    applyLink.style.textDecoration = 'none';
+
+    // Assemble card
+    contentDiv.appendChild(nameEl);
+    contentDiv.appendChild(badgeSpan);
+    contentDiv.appendChild(locationEl);
+    contentDiv.appendChild(descEl);
+    contentDiv.appendChild(applyLink);
+    card.appendChild(imgDiv);
+    card.appendChild(contentDiv);
+    return card;
+  }
+
+  // Render all health institutions into grid
+  const gridContainer = document.getElementById('institutionGrid');
+  if (gridContainer) {
+    healthInstitutions.forEach(inst => {
+      const card = createInstitutionCard(inst);
+      gridContainer.appendChild(card);
+    });
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('.nav-links a, .hero-content a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

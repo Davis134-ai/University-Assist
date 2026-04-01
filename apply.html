@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Apply to Health Training Institution | University Assist Group</title>
+  <!-- Google Fonts + modern system font fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f9;
+      color: #0f172a;
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .form-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation */
+    .app-header {
+      background: linear-gradient(135deg, #0f766e, #0d5c56);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 1.5rem 1.5rem 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .app-header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .back-link {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-link:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Form Card */
+    .form-card {
+      background: white;
+      border-radius: 0 0 1.5rem 1.5rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    /* Ministry Header */
+    .ministry-header {
+      background: #fef9e3;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      border-bottom: 3px solid #0f766e;
+      position: relative;
+    }
+
+    .ministry-header h2 {
+      color: #1e3a5f;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .ministry-header p {
+      color: #475569;
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+    }
+
+    .photo-section {
+      position: absolute;
+      right: 2rem;
+      top: 1rem;
+      text-align: center;
+    }
+
+    .photo-placeholder {
+      width: 100px;
+      height: 120px;
+      border: 2px dashed #0f766e;
+      background: #f8fafc;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #0f766e;
+      cursor: pointer;
+    }
+
+    .photo-placeholder i {
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .photo-input {
+      display: none;
+    }
+
+    /* Form Sections */
+    .form-section {
+      padding: 1.8rem 2rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-left: 4px solid #0f766e;
+      padding-left: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #334155;
+    }
+
+    .form-group label .required {
+      color: #dc2626;
+      margin-left: 0.2rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.75rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border 0.2s, box-shadow 0.2s;
+      background: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0f766e;
+      box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+    }
+
+    .declaration {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin: 1rem 0;
+    }
+
+    .signature-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn-submit {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: #0b5e58;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #059669;
+      display: block;
+    }
+
+    .alert-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #dc2626;
+      display: block;
+    }
+
+    .alert-info {
+      background: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+      display: block;
+    }
+
+    .entrant-selector {
+      background: #f1f5f9;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .entrant-options {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .entrant-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      border: 1px solid #cbd5e1;
+      background: white;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .entrant-btn.active {
+      background: #0f766e;
+      color: white;
+      border-color: #0f766e;
+    }
+
+    .dynamic-section {
+      transition: all 0.2s;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    hr {
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .form-section {
+        padding: 1.2rem;
+      }
+      .photo-section {
+        position: static;
+        margin-top: 1rem;
+      }
+      .ministry-header {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <div class="app-header">
+    <h1><i class="fas fa-hand-holding-medical"></i> University Assist Group</h1>
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Institutions</a>
+  </div>
+
+  <div class="form-card">
+    <div class="ministry-header">
+      <div class="photo-section">
+        <div class="photo-placeholder" id="photoPlaceholder" onclick="document.getElementById('passportPhoto').click()">
+          <i class="fas fa-camera"></i>
+          <span>Attach<br>Passport Photo</span>
+        </div>
+        <input type="file" id="passportPhoto" class="photo-input" accept="image/*">
+      </div>
+      <h2><i class="fas fa-landmark"></i> MINISTRY OF EDUCATION AND SPORTS</h2>
+      <p>APPLICATION FOR SELECTION TO HEALTH TRAINING INSTITUTIONS</p>
+      <p style="font-size: 0.8rem; margin-top: 0.5rem;"><strong>Academic Year: 2026/2027</strong></p>
+    </div>
+
+    <form id="applicationForm">
+      <!-- Hidden ref no field will be generated on submission -->
+      <div class="form-section">
+        <div class="section-title"><i class="fas fa-user-graduate"></i> Entrant Type & Course Selection</div>
+        
+        <div class="entrant-selector">
+          <label style="font-weight: 600;">Select Entry Pathway <span class="required">*</span></label>
+          <div class="entrant-options" id="entrantOptions">
+            <button type="button" class="entrant-btn" data-entrant="certificate">Certificate Entrant</button>
+            <button type="button" class="entrant-btn active" data-entrant="diploma">Diploma Direct Entrant</button>
+            <button type="button" class="entrant-btn" data-entrant="extension">Extension Entrant</button>
+          </div>
+        </div>
+        <input type="hidden" id="entrantType" name="entrantType" value="diploma">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>REF NO (For Official Use Only) <span class="required">*</span></label>
+            <input type="text" id="refNo" name="refNo" placeholder="Will be auto-generated" readonly style="background:#f1f5f9;">
+          </div>
+          <div class="form-group">
+            <label>Course Applied For <span class="required">*</span></label>
+            <input type="text" id="courseApplied" name="courseApplied" placeholder="e.g., Diploma in Nursing, Certificate in Midwifery" required>
+          </div>
+        </div>
+
+        <!-- Institution choices (for extension entrant) -->
+        <div id="institutionChoices" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>1st Choice Institution</label>
+              <input type="text" id="firstChoice" name="firstChoice" placeholder="e.g., Mulago School of Nursing">
+            </div>
+            <div class="form-group">
+              <label>2nd Choice Institution</label>
+              <input type="text" id="secondChoice" name="secondChoice" placeholder="e.g., Masaka School of Nursing">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <div class="section-title"><i class="fas fa-id-card"></i> Personal Information</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Surname <span class="required">*</span></label>
+            <input type="text" id="surname" name="surname" required>
+          </div>
+          <div class="form-group">
+            <label>Other Name (in full) <span class="required">*</span></label>
+            <input type="text" id="otherName" name="otherName" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sex <span class="required">*</span></label>
+            <select id="sex" name="sex" required>
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="age" name="age" placeholder="Years">
+          </div>
+          <div class="form-group">
+            <label>Date of Birth <span class="required">*</span></label>
+            <input type="date" id="dob" name="dob" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Place of Birth</label>
+            <input type="text" id="birthPlace" name="birthPlace">
+          </div>
+          <div class="form-group">
+            <label>Religious Affiliation</label>
+            <input type="text" id="religion" name="religion">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Home District <span class="required">*</span></label>
+            <input type="text" id="homeDistrict" name="homeDistrict" required>
+          </div>
+          <div class="form-group">
+            <label>Citizenship <span class="required">*</span></label>
+            <input type="text" id="citizenship" name="citizenship" value="Ugandan" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telephone Contact <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+256XXXXXXXXX" required>
+          </div>
+          <div class="form-group">
+            <label>Permanent Address</label>
+            <input type="text" id="address" name="address">
+          </div>
+          <div class="form-group">
+            <label>Marital Status</label>
+            <select id="maritalStatus" name="maritalStatus">
+              <option value="">Select</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- UCE Section (common for all) -->
+      <div class="form-section">
+        <div class="section-title"><i class="fas fa-graduation-cap"></i> Uganda Certificate of Education (UCE)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Index Number</label>
+            <input type="text" id="uceIndex" name="uceIndex" placeholder="e.g., U1234/501">
+          </div>
+          <div class="form-group">
+            <label>Year of Examination</label>
+            <input type="text" id="uceYear" name="uceYear" placeholder="YYYY">
+          </div>
+          <div class="form-group">
+            <label>Former School</label>
+            <input type="text" id="uceSchool" name="uceSchool">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Biology Score</label><input type="text" id="bioScore" name="bioScore" placeholder="e.g., D2, C6"></div>
+          <div class="form-group"><label>Chemistry Score</label><input type="text" id="chemScore" name="chemScore"></div>
+          <div class="form-group"><label>Physics Score</label><input type="text" id="phyScore" name="phyScore"></div>
+          <div class="form-group"><label>Mathematics Score</label><input type="text" id="mathScore" name="mathScore"></div>
+          <div class="form-group"><label>English Score</label><input type="text" id="engScore" name="engScore"></div>
+        </div>
+      </div>
+
+      <!-- Dynamic Sections: UACE for Diploma, Professional for Extension -->
+      <div id="uaceSection" class="form-section dynamic-section">
+        <div class="section-title"><i class="fas fa-chalkboard-user"></i> Uganda Advanced Certificate of Education (UACE)</div>
+        <div class="form-row">
+          <div class="form-group"><label>Index Number</label><input type="text" id="uaceIndex" name="uaceIndex"></div>
+          <div class="form-group"><label>Year of Examination</label><input type="text" id="uaceYear" name="uaceYear"></div>
+          <div class="form-group"><label>Former School</label><input type="text" id="uaceSchool" name="uaceSchool"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Biology Score</label><input type="text" id="uaceBio" name="uaceBio"></div>
+          <div class="form-group"><label>Chemistry Score</label><input type="text" id="uaceChem" name="uaceChem"></div>
+          <div class="form-group"><label>Physics Score</label><input type="text" id="uacePhy" name="uacePhy"></div>
+          <div class="form-group"><label>Mathematics Score</label><input type="text" id="uaceMath" name="uaceMath"></div>
+          <div class="form-group"><label>Other (specify)</label><input type="text" id="uaceOther" name="uaceOther"></div>
+        </div>
+      </div>
+
+      <div id="extensionSection" class="form-section dynamic-section" style="display: none;">
+        <div class="section-title"><i class="fas fa-stethoscope"></i> Health Professional Training Certificate</div>
+        <div class="form-row">
+          <div class="form-group"><label>Index Number</label><input type="text" id="profIndex" name="profIndex"></div>
+          <div class="form-group"><label>Year of Examination</label><input type="text" id="profYear" name="profYear"></div>
+          <div class="form-group"><label>Former Health Training Institution</label><input type="text" id="profInst" name="profInst"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Professional Council Registration Number</label><input type="text" id="profRegNo" name="profRegNo"></div>
+          <div class="form-group"><label>Valid Practicing License No.</label><input type="text" id="licenseNo" name="licenseNo"></div>
+        </div>
+        <div class="form-group">
+          <label>Recommendation from Current Employer</label>
+          <textarea id="employerRecommendation" name="employerRecommendation" rows="2" placeholder="Name, title, and contact of employer who recommends you"></textarea>
+        </div>
+      </div>
+
+      <!-- Declaration & Signature -->
+      <div class="form-section">
+        <div class="section-title"><i class="fas fa-file-signature"></i> Declaration</div>
+        <div class="declaration">
+          <p>I, <strong><span id="declarationNameDisplay">_________________________</span></strong> DECLARE THAT ALL INFORMATION GIVEN ON THIS FORM IS CORRECT.</p>
+          <div class="signature-row">
+            <div class="form-group" style="flex:1;">
+              <label>Signature of Applicant <span class="required">*</span></label>
+              <input type="text" id="signature" name="signature" placeholder="Type your full name as signature" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" id="declarationDate" name="declarationDate" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div id="formAlert" class="alert"></div>
+        <button type="submit" class="btn-submit" id="submitBtn"><i class="fas fa-paper-plane"></i> Submit Application</button>
+        <p style="font-size:0.7rem; text-align:center; margin-top:1rem; color:#64748b;">After submission, your application will be sent to the admissions office and you'll receive a confirmation.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // DISCORD WEBHOOK CONFIGURATION - YOUR WEBHOOK URL
+  // ============================================================
+  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1489039829759954986/EStjKKZEjA3oICWQUqJZbX5SU7ax6YuF5khynUrY6XBZXP7nMaY9o0-vDPrK9jTfu58V";
+  
+  // Function to send data to Discord
+  async function sendToDiscord(formData, fileData) {
+    // Create a nicely formatted embed for Discord
+    const embed = {
+      title: "🎓 NEW HEALTH TRAINING APPLICATION",
+      color: 0x0f766e,
+      timestamp: new Date().toISOString(),
+      fields: [],
+      footer: {
+        text: "University Assist Group Application System"
+      }
+    };
+    
+    // Add all form fields to the embed
+    for (const [key, value] of Object.entries(formData)) {
+      if (value && value.toString().trim() !== "") {
+        embed.fields.push({
+          name: formatFieldName(key),
+          value: value.toString().substring(0, 1024),
+          inline: key.length < 15
+        });
+      }
+    }
+    
+    // Add file information
+    if (fileData && Object.keys(fileData).length > 0) {
+      let fileInfo = "";
+      for (const [fileName, file] of Object.entries(fileData)) {
+        fileInfo += `📎 ${formatFieldName(fileName)}: ${file.name} (${(file.size / 1024).toFixed(1)} KB)\n`;
+      }
+      embed.fields.push({
+        name: "📁 Attached Documents",
+        value: fileInfo.substring(0, 1024),
+        inline: false
+      });
+    }
+    
+    const payload = {
+      username: "University Assist Group Bot",
+      avatar_url: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+      embeds: [embed],
+      content: `@everyone **New application received!** 📋`
+    };
+    
+    try {
+      const response = await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return { success: true };
+    } catch (error) {
+      console.error("Discord webhook error:", error);
+      return { success: false, error: error.message };
+    }
+  }
+  
+  // Helper function to format field names for display
+  function formatFieldName(key) {
+    const nameMap = {
+      surname: "Surname",
+      otherName: "Other Name",
+      sex: "Sex",
+      age: "Age",
+      dob: "Date of Birth",
+      birthPlace: "Place of Birth",
+      religion: "Religious Affiliation",
+      homeDistrict: "Home District",
+      citizenship: "Citizenship",
+      phone: "Telephone Contact",
+      address: "Permanent Address",
+      maritalStatus: "Marital Status",
+      entrantType: "Entry Pathway",
+      courseApplied: "Course Applied For",
+      firstChoice: "1st Choice Institution",
+      secondChoice: "2nd Choice Institution",
+      refNo: "Reference Number",
+      uceIndex: "UCE Index Number",
+      uceYear: "UCE Year",
+      uceSchool: "UCE School",
+      bioScore: "UCE Biology",
+      chemScore: "UCE Chemistry",
+      phyScore: "UCE Physics",
+      mathScore: "UCE Mathematics",
+      engScore: "UCE English",
+      uaceIndex: "UACE Index Number",
+      uaceYear: "UACE Year",
+      uaceSchool: "UACE School",
+      uaceBio: "UACE Biology",
+      uaceChem: "UACE Chemistry",
+      uacePhy: "UACE Physics",
+      uaceMath: "UACE Mathematics",
+      uaceOther: "UACE Other Subjects",
+      profIndex: "Professional Index",
+      profYear: "Professional Year",
+      profInst: "Former Health Institution",
+      profRegNo: "Professional Registration No.",
+      licenseNo: "Practicing License No.",
+      employerRecommendation: "Employer Recommendation",
+      signature: "Signature",
+      declarationDate: "Declaration Date",
+      institution: "Selected Institution",
+      location: "Institution Location",
+      programType: "Program Type"
+    };
+    
+    return nameMap[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+  }
+  
+  // Get institution info from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const institutionData = {
+    institution: urlParams.get('institution') || 'Not specified',
+    location: urlParams.get('location') || 'Not specified',
+    programType: urlParams.get('programType') || 'Not specified',
+    institutionId: urlParams.get('institutionId') || 'N/A'
+  };
+  
+  // Entrant type switching logic
+  const entrantBtns = document.querySelectorAll('.entrant-btn');
+  const uaceSection = document.getElementById('uaceSection');
+  const extensionSection = document.getElementById('extensionSection');
+  const institutionChoices = document.getElementById('institutionChoices');
+  const entrantTypeInput = document.getElementById('entrantType');
+
+  function updateEntrantType(type) {
+    entrantTypeInput.value = type;
+    uaceSection.style.display = 'none';
+    extensionSection.style.display = 'none';
+    institutionChoices.style.display = 'none';
+    
+    if (type === 'certificate') {
+      uaceSection.style.display = 'none';
+    } else if (type === 'diploma') {
+      uaceSection.style.display = 'block';
+    } else if (type === 'extension') {
+      uaceSection.style.display = 'none';
+      extensionSection.style.display = 'block';
+      institutionChoices.style.display = 'block';
+    }
+    
+    entrantBtns.forEach(btn => {
+      if(btn.dataset.entrant === type) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+  }
+
+  entrantBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      updateEntrantType(btn.dataset.entrant);
+    });
+  });
+  
+  updateEntrantType('diploma');
+
+  // Generate reference number
+  function generateRefNo() {
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `UAG/HTI/${year}${month}/${random}`;
+  }
+  document.getElementById('refNo').value = generateRefNo();
+
+  // Update declaration name preview
+  const surnameInput = document.getElementById('surname');
+  const otherNameInput = document.getElementById('otherName');
+  const declarationSpan = document.getElementById('declarationNameDisplay');
+  function updateDeclarationName() {
+    let surname = surnameInput.value.trim();
+    let other = otherNameInput.value.trim();
+    if(surname || other) {
+      declarationSpan.innerText = `${surname} ${other}`.trim() || '_________________________';
+    } else {
+      declarationSpan.innerText = '_________________________';
+    }
+  }
+  surnameInput.addEventListener('input', updateDeclarationName);
+  otherNameInput.addEventListener('input', updateDeclarationName);
+
+  // Photo preview
+  const photoInput = document.getElementById('passportPhoto');
+  const photoPlaceholder = document.getElementById('photoPlaceholder');
+  photoInput.addEventListener('change', function(e) {
+    if(e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        photoPlaceholder.style.backgroundImage = `url(${ev.target.result})`;
+        photoPlaceholder.style.backgroundSize = 'cover';
+        photoPlaceholder.style.backgroundPosition = 'center';
+        photoPlaceholder.innerHTML = '<i class="fas fa-check-circle" style="font-size:2rem;"></i><span>Photo<br>Attached</span>';
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  });
+
+  // Form submission handler
+  const form = document.getElementById('applicationForm');
+  const alertDiv = document.getElementById('formAlert');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Basic required validation
+    const requiredFields = ['surname', 'otherName', 'sex', 'dob', 'homeDistrict', 'phone', 'courseApplied', 'signature', 'declarationDate'];
+    let missing = [];
+    requiredFields.forEach(field => {
+      const el = document.getElementById(field);
+      if(el && !el.value.trim()) missing.push(formatFieldName(field));
+    });
+    
+    if(missing.length) {
+      alertDiv.className = 'alert alert-error';
+      alertDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Please complete required fields: ${missing.join(', ')}`;
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
+    
+    // Disable submit button and show loading
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting Application...';
+    
+    // Collect all form data
+    const formData = {};
+    const formElements = form.elements;
+    for (let element of formElements) {
+      if (element.name && element.name !== '' && element.type !== 'file') {
+        formData[element.name] = element.value;
+      }
+    }
+    
+    // Add institution info from URL
+    formData.institution = institutionData.institution;
+    formData.location = institutionData.location;
+    formData.programType = institutionData.programType;
+    
+    // Add timestamp
+    formData.submissionTimestamp = new Date().toLocaleString();
+    
+    // Collect file information (just names, not actual files due to Discord limitations)
+    const fileData = {};
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    for (let input of fileInputs) {
+      if (input.files && input.files.length > 0) {
+        fileData[input.id] = {
+          name: input.files[0].name,
+          size: input.files[0].size,
+          type: input.files[0].type
+        };
+      }
+    }
+    
+    // Show sending status
+    alertDiv.className = 'alert alert-info';
+    alertDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending application to admissions office...';
+    
+    // Send to Discord
+    const result = await sendToDiscord(formData, fileData);
+    
+    if (result.success) {
+      alertDiv.className = 'alert alert-success';
+      alertDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Application successfully submitted!<br>
+      <strong>Reference Number:</strong> ${formData.refNo}<br>
+      <strong>Applicant:</strong> ${formData.surname} ${formData.otherName}<br>
+      <strong>Institution:</strong> ${formData.institution}<br>
+      <strong>Course:</strong> ${formData.courseApplied}<br>
+      <strong>Entry Pathway:</strong> ${formData.entrantType?.toUpperCase()}<br><br>
+      Your application has been sent to the admissions office. You will receive a confirmation via SMS/Email shortly.`;
+      
+      submitBtn.innerHTML = '<i class="fas fa-check"></i> Application Submitted';
+      submitBtn.disabled = false;
+      
+      // Scroll to show success message
+      alertDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Optional: Reset the form after 3 seconds
+      setTimeout(() => {
+        if (confirm("Would you like to submit another application?")) {
+          form.reset();
+          document.getElementById('refNo').value = generateRefNo();
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+          alertDiv.style.display = 'none';
+          updateEntrantType('diploma');
+        }
+      }, 3000);
+    } else {
+      alertDiv.className = 'alert alert-error';
+      alertDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Failed to submit application. Error: ${result.error}<br><br>
+      Please try again or contact support at universityassist73@gmail.com`;
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+    }
+  });
+</script>
+</body>
+</html>
