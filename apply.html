@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Apply to Health Training Institution | University Assist Group</title>
-  <!-- Google Fonts + modern system font fallback -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -28,7 +26,6 @@
       margin: 0 auto;
     }
 
-    /* Header & Navigation */
     .app-header {
       background: linear-gradient(135deg, #0f766e, #0d5c56);
       color: white;
@@ -63,7 +60,6 @@
       background: rgba(255,255,255,0.3);
     }
 
-    /* Form Card */
     .form-card {
       background: white;
       border-radius: 0 0 1.5rem 1.5rem;
@@ -71,7 +67,6 @@
       overflow: hidden;
     }
 
-    /* Ministry Header */
     .ministry-header {
       background: #fef9e3;
       padding: 1.5rem 2rem;
@@ -123,7 +118,6 @@
       display: none;
     }
 
-    /* Form Sections */
     .form-section {
       padding: 1.8rem 2rem;
       border-bottom: 1px solid #e2e8f0;
@@ -344,7 +338,6 @@
     </div>
 
     <form id="applicationForm">
-      <!-- Hidden ref no field will be generated on submission -->
       <div class="form-section">
         <div class="section-title"><i class="fas fa-user-graduate"></i> Entrant Type & Course Selection</div>
         
@@ -369,7 +362,6 @@
           </div>
         </div>
 
-        <!-- Institution choices (for extension entrant) -->
         <div id="institutionChoices" style="display: none;">
           <div class="form-row">
             <div class="form-group">
@@ -384,7 +376,6 @@
         </div>
       </div>
 
-      <!-- Personal Information Section -->
       <div class="form-section">
         <div class="section-title"><i class="fas fa-id-card"></i> Personal Information</div>
         <div class="form-row">
@@ -457,7 +448,6 @@
         </div>
       </div>
 
-      <!-- UCE Section (common for all) -->
       <div class="form-section">
         <div class="section-title"><i class="fas fa-graduation-cap"></i> Uganda Certificate of Education (UCE)</div>
         <div class="form-row">
@@ -483,7 +473,6 @@
         </div>
       </div>
 
-      <!-- Dynamic Sections: UACE for Diploma, Professional for Extension -->
       <div id="uaceSection" class="form-section dynamic-section">
         <div class="section-title"><i class="fas fa-chalkboard-user"></i> Uganda Advanced Certificate of Education (UACE)</div>
         <div class="form-row">
@@ -517,7 +506,6 @@
         </div>
       </div>
 
-      <!-- Declaration & Signature -->
       <div class="form-section">
         <div class="section-title"><i class="fas fa-file-signature"></i> Declaration</div>
         <div class="declaration">
@@ -545,76 +533,76 @@
 </div>
 
 <script>
-  // ============================================================
-  // DISCORD WEBHOOK CONFIGURATION - YOUR WEBHOOK URL
-  // ============================================================
   const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1489039829759954986/EStjKKZEjA3oICWQUqJZbX5SU7ax6YuF5khynUrY6XBZXP7nMaY9o0-vDPrK9jTfu58V";
-  
-  // Function to send data to Discord
+
+  // ============================================================
+  // UPDATED sendToDiscord — fixes 400 errors from Discord API
+  // ============================================================
   async function sendToDiscord(formData, fileData) {
-    // Create a nicely formatted embed for Discord
-    const embed = {
-      title: "🎓 NEW HEALTH TRAINING APPLICATION",
-      color: 0x0f766e,
-      timestamp: new Date().toISOString(),
-      fields: [],
-      footer: {
-        text: "University Assist Group Application System"
-      }
-    };
-    
-    // Add all form fields to the embed
+    // Build all fields first
+    const allFields = [];
     for (const [key, value] of Object.entries(formData)) {
       if (value && value.toString().trim() !== "") {
-        embed.fields.push({
+        allFields.push({
           name: formatFieldName(key),
           value: value.toString().substring(0, 1024),
           inline: key.length < 15
         });
       }
     }
-    
-    // Add file information
+
     if (fileData && Object.keys(fileData).length > 0) {
       let fileInfo = "";
       for (const [fileName, file] of Object.entries(fileData)) {
         fileInfo += `📎 ${formatFieldName(fileName)}: ${file.name} (${(file.size / 1024).toFixed(1)} KB)\n`;
       }
-      embed.fields.push({
-        name: "📁 Attached Documents",
-        value: fileInfo.substring(0, 1024),
-        inline: false
+      allFields.push({ name: "📁 Attached Documents", value: fileInfo.substring(0, 1024), inline: false });
+    }
+
+    // FIX 1: Discord allows max 25 fields per embed — chunk them into multiple embeds
+    const CHUNK_SIZE = 25;
+    const embeds = [];
+    for (let i = 0; i < allFields.length; i += CHUNK_SIZE) {
+      embeds.push({
+        title: i === 0
+          ? "🎓 NEW HEALTH TRAINING APPLICATION"
+          : `🎓 Application Details (Part ${Math.floor(i / CHUNK_SIZE) + 1})`,
+        color: 0x0f766e,
+        fields: allFields.slice(i, i + CHUNK_SIZE),
+        ...(i === 0 ? { timestamp: new Date().toISOString() } : {}),
+        ...(i + CHUNK_SIZE >= allFields.length ? { footer: { text: "University Assist Group Application System" } } : {})
       });
     }
-    
+
     const payload = {
       username: "University Assist Group Bot",
       avatar_url: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-      embeds: [embed],
-      content: `@everyone **New application received!** 📋`
+      // FIX 2: Removed @everyone — webhooks can't ping it without special server perms (causes 400)
+      content: "**New application received!** 📋",
+      embeds: embeds.slice(0, 10) // Discord max is 10 embeds per message
     };
-    
+
     try {
       const response = await fetch(DISCORD_WEBHOOK_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // FIX 3: Read actual Discord error so you can debug easier in future
+        const errorBody = await response.text();
+        console.error("Discord error body:", errorBody);
+        throw new Error(`HTTP error! status: ${response.status} — ${errorBody}`);
       }
-      
+
       return { success: true };
     } catch (error) {
       console.error("Discord webhook error:", error);
       return { success: false, error: error.message };
     }
   }
-  
-  // Helper function to format field names for display
+
   function formatFieldName(key) {
     const nameMap = {
       surname: "Surname",
@@ -662,11 +650,9 @@
       location: "Institution Location",
       programType: "Program Type"
     };
-    
     return nameMap[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
   }
-  
-  // Get institution info from URL parameters
+
   const urlParams = new URLSearchParams(window.location.search);
   const institutionData = {
     institution: urlParams.get('institution') || 'Not specified',
@@ -674,8 +660,7 @@
     programType: urlParams.get('programType') || 'Not specified',
     institutionId: urlParams.get('institutionId') || 'N/A'
   };
-  
-  // Entrant type switching logic
+
   const entrantBtns = document.querySelectorAll('.entrant-btn');
   const uaceSection = document.getElementById('uaceSection');
   const extensionSection = document.getElementById('extensionSection');
@@ -687,32 +672,26 @@
     uaceSection.style.display = 'none';
     extensionSection.style.display = 'none';
     institutionChoices.style.display = 'none';
-    
-    if (type === 'certificate') {
-      uaceSection.style.display = 'none';
-    } else if (type === 'diploma') {
+
+    if (type === 'diploma') {
       uaceSection.style.display = 'block';
     } else if (type === 'extension') {
-      uaceSection.style.display = 'none';
       extensionSection.style.display = 'block';
       institutionChoices.style.display = 'block';
     }
-    
+
     entrantBtns.forEach(btn => {
-      if(btn.dataset.entrant === type) btn.classList.add('active');
+      if (btn.dataset.entrant === type) btn.classList.add('active');
       else btn.classList.remove('active');
     });
   }
 
   entrantBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      updateEntrantType(btn.dataset.entrant);
-    });
+    btn.addEventListener('click', () => updateEntrantType(btn.dataset.entrant));
   });
-  
+
   updateEntrantType('diploma');
 
-  // Generate reference number
   function generateRefNo() {
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     const date = new Date();
@@ -722,27 +701,21 @@
   }
   document.getElementById('refNo').value = generateRefNo();
 
-  // Update declaration name preview
   const surnameInput = document.getElementById('surname');
   const otherNameInput = document.getElementById('otherName');
   const declarationSpan = document.getElementById('declarationNameDisplay');
   function updateDeclarationName() {
     let surname = surnameInput.value.trim();
     let other = otherNameInput.value.trim();
-    if(surname || other) {
-      declarationSpan.innerText = `${surname} ${other}`.trim() || '_________________________';
-    } else {
-      declarationSpan.innerText = '_________________________';
-    }
+    declarationSpan.innerText = (surname || other) ? `${surname} ${other}`.trim() : '_________________________';
   }
   surnameInput.addEventListener('input', updateDeclarationName);
   otherNameInput.addEventListener('input', updateDeclarationName);
 
-  // Photo preview
   const photoInput = document.getElementById('passportPhoto');
   const photoPlaceholder = document.getElementById('photoPlaceholder');
   photoInput.addEventListener('change', function(e) {
-    if(e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = function(ev) {
         photoPlaceholder.style.backgroundImage = `url(${ev.target.result})`;
@@ -754,54 +727,44 @@
     }
   });
 
-  // Form submission handler
   const form = document.getElementById('applicationForm');
   const alertDiv = document.getElementById('formAlert');
   const submitBtn = document.getElementById('submitBtn');
 
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    // Basic required validation
+
     const requiredFields = ['surname', 'otherName', 'sex', 'dob', 'homeDistrict', 'phone', 'courseApplied', 'signature', 'declarationDate'];
     let missing = [];
     requiredFields.forEach(field => {
       const el = document.getElementById(field);
-      if(el && !el.value.trim()) missing.push(formatFieldName(field));
+      if (el && !el.value.trim()) missing.push(formatFieldName(field));
     });
-    
-    if(missing.length) {
+
+    if (missing.length) {
       alertDiv.className = 'alert alert-error';
       alertDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Please complete required fields: ${missing.join(', ')}`;
-      window.scrollTo({top: 0, behavior: 'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    
-    // Disable submit button and show loading
+
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting Application...';
-    
-    // Collect all form data
+
     const formData = {};
-    const formElements = form.elements;
-    for (let element of formElements) {
+    for (let element of form.elements) {
       if (element.name && element.name !== '' && element.type !== 'file') {
         formData[element.name] = element.value;
       }
     }
-    
-    // Add institution info from URL
+
     formData.institution = institutionData.institution;
     formData.location = institutionData.location;
     formData.programType = institutionData.programType;
-    
-    // Add timestamp
     formData.submissionTimestamp = new Date().toLocaleString();
-    
-    // Collect file information (just names, not actual files due to Discord limitations)
+
     const fileData = {};
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    for (let input of fileInputs) {
+    for (let input of document.querySelectorAll('input[type="file"]')) {
       if (input.files && input.files.length > 0) {
         fileData[input.id] = {
           name: input.files[0].name,
@@ -810,14 +773,12 @@
         };
       }
     }
-    
-    // Show sending status
+
     alertDiv.className = 'alert alert-info';
     alertDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending application to admissions office...';
-    
-    // Send to Discord
+
     const result = await sendToDiscord(formData, fileData);
-    
+
     if (result.success) {
       alertDiv.className = 'alert alert-success';
       alertDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Application successfully submitted!<br>
@@ -827,14 +788,11 @@
       <strong>Course:</strong> ${formData.courseApplied}<br>
       <strong>Entry Pathway:</strong> ${formData.entrantType?.toUpperCase()}<br><br>
       Your application has been sent to the admissions office. You will receive a confirmation via SMS/Email shortly.`;
-      
+
       submitBtn.innerHTML = '<i class="fas fa-check"></i> Application Submitted';
       submitBtn.disabled = false;
-      
-      // Scroll to show success message
       alertDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      
-      // Optional: Reset the form after 3 seconds
+
       setTimeout(() => {
         if (confirm("Would you like to submit another application?")) {
           form.reset();
