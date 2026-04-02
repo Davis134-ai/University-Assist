@@ -314,6 +314,122 @@
         padding: 1rem;
       }
     }
+
+    /* Payment Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 1.5rem;
+      max-width: 480px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-header {
+      background: linear-gradient(135deg, #0f766e, #0d5c56);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .modal-header .check-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .modal-header h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .modal-header p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 0.25rem;
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .modal-ref {
+      background: #f1f5f9;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      font-size: 0.85rem;
+      color: #334155;
+    }
+    .modal-ref strong {
+      color: #0f766e;
+      font-size: 1rem;
+    }
+    .payment-option {
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .payment-option-title {
+      font-weight: 700;
+      color: #0f766e;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .payment-detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .payment-detail-row:last-child {
+      border-bottom: none;
+    }
+    .payment-detail-row span:first-child {
+      color: #64748b;
+    }
+    .payment-detail-row span:last-child {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .modal-note {
+      background: #fef9e3;
+      border-left: 4px solid #f59e0b;
+      padding: 0.75rem 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      font-size: 0.8rem;
+      color: #92400e;
+      margin-top: 1rem;
+    }
+    .modal-close-btn {
+      background: #0f766e;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.2rem;
+    }
   </style>
 </head>
 <body>
@@ -532,14 +648,52 @@
   </div>
 </div>
 
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="check-icon">✅</div>
+      <h3>Application Received!</h3>
+      <p>Complete your payment to finalise your application</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-ref">
+        Reference Number: <strong id="modalRefNo"></strong>
+      </div>
+
+      <!-- Bank Payment -->
+      <div class="payment-option">
+        <div class="payment-option-title"><i class="fas fa-university"></i> Option 1: Bank Payment</div>
+        <div class="payment-detail-row"><span>Bank Name</span><span>Absa Bank Uganda</span></div>
+        <div class="payment-detail-row"><span>Account Name</span><span>University Assist Group</span></div>
+        <div class="payment-detail-row"><span>Account Number</span><span>6009208004</span></div>
+        <div class="payment-detail-row"><span>Amount</span><span>UGX 50,000</span></div>
+      </div>
+
+      <!-- Mobile Money / Merchant -->
+      <div class="payment-option">
+        <div class="payment-option-title"><i class="fas fa-mobile-alt"></i> Option 2: Mobile Money Merchant</div>
+        <div class="payment-detail-row"><span>MTN Merchant Code</span><span>*165*3*123456#</span></div>
+        <div class="payment-detail-row"><span>Airtel Merchant Code</span><span>*185*3*654321#</span></div>
+        <div class="payment-detail-row"><span>Merchant Name</span><span>University Assist Group</span></div>
+        <div class="payment-detail-row"><span>Amount</span><span>UGX 50,000</span></div>
+      </div>
+
+      <div class="modal-note">
+        ⚠️ Use your <strong>Reference Number</strong> as the payment reason/narration so we can identify your payment. Your application will be confirmed within 24 hours after payment.
+      </div>
+
+      <button class="modal-close-btn" onclick="document.getElementById('paymentModal').classList.remove('active')">
+        <i class="fas fa-check"></i> Got it, I'll make payment
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
   const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1489039829759954986/EStjKKZEjA3oICWQUqJZbX5SU7ax6YuF5khynUrY6XBZXP7nMaY9o0-vDPrK9jTfu58V";
 
-  // ============================================================
-  // UPDATED sendToDiscord — fixes 400 errors from Discord API
-  // ============================================================
   async function sendToDiscord(formData, fileData) {
-    // Build all fields first
     const allFields = [];
     for (const [key, value] of Object.entries(formData)) {
       if (value && value.toString().trim() !== "") {
@@ -559,7 +713,6 @@
       allFields.push({ name: "📁 Attached Documents", value: fileInfo.substring(0, 1024), inline: false });
     }
 
-    // FIX 1: Discord allows max 25 fields per embed — chunk them into multiple embeds
     const CHUNK_SIZE = 25;
     const embeds = [];
     for (let i = 0; i < allFields.length; i += CHUNK_SIZE) {
@@ -577,9 +730,8 @@
     const payload = {
       username: "University Assist Group Bot",
       avatar_url: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-      // FIX 2: Removed @everyone — webhooks can't ping it without special server perms (causes 400)
       content: "**New application received!** 📋",
-      embeds: embeds.slice(0, 10) // Discord max is 10 embeds per message
+      embeds: embeds.slice(0, 10)
     };
 
     try {
@@ -590,7 +742,6 @@
       });
 
       if (!response.ok) {
-        // FIX 3: Read actual Discord error so you can debug easier in future
         const errorBody = await response.text();
         console.error("Discord error body:", errorBody);
         throw new Error(`HTTP error! status: ${response.status} — ${errorBody}`);
@@ -780,6 +931,10 @@
     const result = await sendToDiscord(formData, fileData);
 
     if (result.success) {
+      // Show payment modal
+      document.getElementById('modalRefNo').textContent = formData.refNo;
+      document.getElementById('paymentModal').classList.add('active');
+
       alertDiv.className = 'alert alert-success';
       alertDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Application successfully submitted!<br>
       <strong>Reference Number:</strong> ${formData.refNo}<br>
